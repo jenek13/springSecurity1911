@@ -4,85 +4,51 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+//import ru.ten.crud.model.User;
 import ru.ten.crud.model.User;
-
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
-public class UserDaoHibernateImpl implements UserDAO<User> {
+@Repository
+@Transactional
+public class UserDaoHibernateImpl implements UserDAO {
 
-    private SessionFactory sessionFactory;
-
-    public UserDaoHibernateImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
-
-
-
-    @Override
-    public void insertDAO(User user) {
-        Session session = sessionFactory.openSession();
-        Transaction tx1 = session.getTransaction();
-        try {
-            tx1 = session.beginTransaction();
-            session.save(user);
-            tx1.commit();
-        } catch (Exception e) {
-            tx1.rollback();
-        } finally {
-            session.close();
-
-        }
-    }
-
-    @Override
-    public void updateDAO(User user) {
-        Session session = sessionFactory.openSession();
-        Transaction tx1 = session.beginTransaction();
-        try {
-            tx1 = session.beginTransaction();
-            session.update(user);
-            tx1.commit();
-        } catch (Exception e) {
-            tx1.rollback();
-        } finally {
-            session.close();
-        }
-    }
-
-    @Override
-    public boolean deleteDAO(int id) {
-        Session session = sessionFactory.openSession();
-        Transaction tx1 = session.beginTransaction();
-        User user = (User) session.get(User.class, id);
-        session.delete(user);
-        tx1.commit();
-        session.close();
-        return false;
-    }
-
-
-    @Override
-    public User selectUser(int id) {
-        return (User) sessionFactory.openSession().get(User.class, id);
-    }
-
-    @Override
-    public String getRoleByLoginPassword(String login, String password) {
-        User user = (User) sessionFactory.openSession().get(User.class, login);
-        return user.getRole();
-    }
-
-    @Override
-    public User selectUserByLoginPassword(String login, String password) {
-        Session session = sessionFactory.openSession();
-        Query query = session.createQuery("FROM User u where u.login = :login");//прмиер hql что рабаотет с сущностью USer класс а не с таблицей newuser
-        query.setParameter("login", login);
-        User user = (User) query.uniqueResult();
-        return user;
-    }
+    @PersistenceContext
+    private EntityManager em;
 
     @Override
     public List<User> selectAllUsers() {
-        return (List<User>) sessionFactory.openSession().createQuery("FROM User").list();
+        TypedQuery<User> query = em.createQuery("SELECT u FROM User u", User.class);
+        return query.getResultList();
     }
+
+    @Override
+    public void addUser(User user) {
+        em.persist(user);
+    }
+
+    @Override
+    public void editUser(User user) {
+        em.merge(user);
+    }
+
+    @Override
+    public void removeUser(int id) {
+        TypedQuery<User> query = em.createQuery("DELETE from User u WHERE u.id = :id", User.class);
+        query.setParameter("id", id);
+        query.executeUpdate();
+    }
+
+    @Override
+    public User getUserById(int id) {
+        return em.find(User.class, id);
+    }
+
 }

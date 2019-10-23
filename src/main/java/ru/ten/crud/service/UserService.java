@@ -1,12 +1,20 @@
 package ru.ten.crud.service;
 
+import ru.ten.crud.model.User;
+
 import java.sql.SQLException;
 import java.util.List;
 
 public interface UserService<T> {
 
-    void insertUser(String name, int age, String role) throws SQLException;
-    void updateUser(int id, String name, int age, String role) throws SQLException;;
+    User selectUser(int id) throws SQLException;
+    List<User> listUser();
     void deleteUser(int id) throws SQLException;
-    List<T> listUser();
+    //User getUserbyLoginPassword(String login, String password) throws SQLException;
+    void insertUser(User user);
+    //void insertUserByLogin(String name, int age) throws SQLException;
+    void updateUser(int id, String name, int age) throws SQLException;;
+
+
+
 }

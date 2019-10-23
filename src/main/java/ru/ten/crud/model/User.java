@@ -1,46 +1,80 @@
 package ru.ten.crud.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import javax.persistence.*;
+import java.util.Objects;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-@Table(name = "newuser")
+@Table(name = "newuser")//todo вот здесь имя таблицы а было неверное
 public class User {
 
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "name")
+    @Column(name="name")
     private String name;
 
-    @Column(name = "age")
+    @Column(name="age")
     private int age;
 
-    @Column(name = "role")
-    private String role;
 
-    @Column(name = "login")
-    private String login;
 
-    @Column(name = "password")
-    private String password;
-
-    public String getRole() {
-        return role;
+    public User() {
     }
 
-    public User(String name, int age, String role) {
+    public User(int id) {
+        this.id = id;
     }
 
-    public User(String login, String password, String name, int age, String role) {
+    public User(int id, String name, int age) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+
     }
 
-    public User(int id, String name, int age, String role) {
+
+    public User(String name, int age) {
+        this.name = name;
+        this.age = age;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return getId() == user.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
 }

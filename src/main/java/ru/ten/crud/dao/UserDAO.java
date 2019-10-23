@@ -6,20 +6,20 @@ import ru.ten.crud.model.User;
 import java.sql.SQLException;
 import java.util.List;
 
-public interface UserDAO<Entity> {
+public interface UserDAO {
 
-    void insertDAO(Entity model) throws SQLException, DBException;
+    void addUser(User user);
 
-    void updateDAO(User user) throws SQLException;
+    void editUser(User user) throws SQLException;
 
-    boolean deleteDAO(int id) throws SQLException;
+    void removeUser(int id) throws SQLException;
 
-    Entity selectUser(int id) throws SQLException;
+    User getUserById(int id) throws SQLException;
 
-    String getRoleByLoginPassword(String login, String password) throws SQLException;
+    //String getRoleByLoginPassword(String login, String password) throws SQLException;
 
-    Entity selectUserByLoginPassword(String login, String password) throws SQLException;
+    //User selectUserByLoginPassword(String login, String password) throws SQLException;
 
-    List<Entity> selectAllUsers();
+    List selectAllUsers();
 
 }
