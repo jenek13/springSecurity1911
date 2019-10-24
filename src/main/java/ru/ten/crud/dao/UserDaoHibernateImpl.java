@@ -1,18 +1,11 @@
 package ru.ten.crud.dao;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-//import ru.ten.crud.model.User;
 import ru.ten.crud.model.User;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -41,7 +34,8 @@ public class UserDaoHibernateImpl implements UserDAO {
 
     @Override
     public void removeUser(int id) {
-        TypedQuery<User> query = em.createQuery("DELETE from User u WHERE u.id = :id", User.class);
+        //TypedQuery<User> query = em.createQuery("DELETE from User u WHERE u.id = :id", User.class);нужно было удалить user.class
+        Query query = em.createQuery("DELETE from User u WHERE u.id = :id");
         query.setParameter("id", id);
         query.executeUpdate();
     }

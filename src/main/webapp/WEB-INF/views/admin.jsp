@@ -28,7 +28,7 @@
                 <td>${user.name}</td>
                 <td>${user.age}</td>
                 <td>
-                    <a href="${pageContext.servletContext.contextPath}/edit?id=${user.id}">Edit</a>
+                    <a href="${pageContext.servletContext.contextPath}/admin/users/edit?id=${user.id}">Edit</a>
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     <a href="${pageContext.servletContext.contextPath}/admin/users/delete?id=${user.id}">Delete</a>
                 </td>
