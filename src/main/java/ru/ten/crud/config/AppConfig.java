@@ -42,7 +42,7 @@ public class AppConfig {
         emf.setDataSource(getDataSource());
         emf.setJpaProperties(getHibernateProperties());
         emf.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        emf.setPackagesToScan("ru/ten/crud/model");
+        emf.setPackagesToScan("ru/ten/crud/model");//через точки
         return emf;
     }
 
